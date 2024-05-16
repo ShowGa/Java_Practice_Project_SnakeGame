@@ -1,9 +1,11 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class SnakeGame extends JPanel {
+public class SnakeGame extends JPanel implements KeyListener {
 
     // Game configuration
     public static final int cellsize = 20; // Size of the cell
@@ -16,6 +18,7 @@ public class SnakeGame extends JPanel {
     private Timer t;
     private int speed = 100;
     private static String direction;
+    private Boolean canChange = true;
 
     public SnakeGame() {
         snake = new Snake();
@@ -31,6 +34,9 @@ public class SnakeGame extends JPanel {
         }, 0, speed);
 
         direction = "Right";
+
+        // add KeyListener
+        addKeyListener(this);
     }
 
     // Draw the snake
@@ -56,17 +62,55 @@ public class SnakeGame extends JPanel {
         } else if (direction.equals("Up")) {
             snakeY -= cellsize;
         } else if (direction.equals("Down")) {
-            snakeX += cellsize;
+            snakeY += cellsize;
         }
         Node newHead = new Node(snakeX, snakeY);
         snake.getSnakeBody().removeLast();
         snake.getSnakeBody().add(0, newHead);
+
+        // make canChange => true
+        this.canChange = true;
+
+        requestFocusInWindow();
     }
 
     // set the panel
     @Override
     public Dimension getPreferredSize() {
         return new Dimension(width, height);
+    }
+
+    /*-----------From KeyListener------------*/
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        int k = e.getKeyCode();
+
+        // check if canChange
+        if (canChange) {
+            if (k == KeyEvent.VK_A && !direction.equals("Right")) {
+                direction = "Left";
+
+            } else if (k == KeyEvent.VK_D && !direction.equals("Left")) {
+                direction = "Right";
+
+            } else if (k == KeyEvent.VK_W && !direction.equals("Down")) {
+                direction = "Up";
+
+            } else if (k == KeyEvent.VK_S && !direction.equals("Up")) {
+                direction = "Down";
+            }
+        }
+        canChange = false;
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+
     }
 
     // Executing the code
