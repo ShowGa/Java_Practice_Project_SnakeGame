@@ -64,6 +64,17 @@ public class SnakeGame extends JPanel implements KeyListener {
         } else if (direction.equals("Down")) {
             snakeY += cellsize;
         }
+        // check if hit the wall => YES 1.run through 2.Game Over
+        if (snakeX >= width) {
+            snakeX = 0;
+        } else if (snakeX < 0) {
+            snakeX = width - cellsize;
+        } else if (snakeY >= height) {
+            snakeY = 0;
+        } else if (snakeY < 0) {
+            snakeY = height - cellsize;
+        }
+
         Node newHead = new Node(snakeX, snakeY);
         snake.getSnakeBody().removeLast();
         snake.getSnakeBody().add(0, newHead);

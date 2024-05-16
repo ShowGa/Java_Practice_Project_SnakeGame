@@ -21,8 +21,14 @@ public class Snake {
 
     // drawSnake function
     public void drawSnake(Graphics g) {
-        g.setColor(Color.GREEN);
-        for (Node n : snakeBody) {
+        // make the head be Orange
+        for (int i = 0; i < snakeBody.size(); i++) {
+            if (i == 0) {
+                g.setColor(Color.ORANGE);
+            } else {
+                g.setColor(Color.GREEN);
+            }
+            Node n = snakeBody.get(i);
             g.fillOval(n.x, n.y, SnakeGame.cellsize, SnakeGame.cellsize);
         }
     }
