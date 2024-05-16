@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class SnakeGame extends JPanel {
 
@@ -11,10 +13,24 @@ public class SnakeGame extends JPanel {
     public static int col = width / cellsize;
     private Snake snake;
     private Fruit fruit;
+    private Timer t;
+    private int speed = 100;
+    private static String direction;
 
     public SnakeGame() {
         snake = new Snake();
         fruit = new Fruit();
+
+        // something like setInterval in JavaScript
+        t = new Timer();
+        t.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                repaint();
+            }
+        }, 0, speed);
+
+        direction = "Right";
     }
 
     // Draw the snake
@@ -29,6 +45,22 @@ public class SnakeGame extends JPanel {
 
         //draw snake
         fruit.drawFruit(g);
+
+        // remove snake tail then put in front of the head
+        int snakeX = snake.getSnakeBody().getFirst().x;
+        int snakeY = snake.getSnakeBody().getFirst().y;
+        if (direction.equals("Left")) {
+            snakeX -= cellsize;
+        } else if (direction.equals("Right")) {
+            snakeX += cellsize;
+        } else if (direction.equals("Up")) {
+            snakeY -= cellsize;
+        } else if (direction.equals("Down")) {
+            snakeX += cellsize;
+        }
+        Node newHead = new Node(snakeX, snakeY);
+        snake.getSnakeBody().removeLast();
+        snake.getSnakeBody().add(0, newHead);
     }
 
     // set the panel

@@ -15,6 +15,10 @@ public class Snake {
         snakeBody.add(new Node(20, 0));
     }
 
+    public ArrayList<Node> getSnakeBody() {
+        return snakeBody;
+    }
+
     // drawSnake function
     public void drawSnake(Graphics g) {
         g.setColor(Color.GREEN);
