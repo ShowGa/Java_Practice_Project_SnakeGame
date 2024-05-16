@@ -10,9 +10,11 @@ public class SnakeGame extends JPanel {
     public static int row = height / cellsize;
     public static int col = width / cellsize;
     private Snake snake;
+    private Fruit fruit;
 
     public SnakeGame() {
         snake = new Snake();
+        fruit = new Fruit();
     }
 
     // Draw the snake
@@ -24,6 +26,9 @@ public class SnakeGame extends JPanel {
 
         // draw snake
         snake.drawSnake(g);
+
+        //draw snake
+        fruit.drawFruit(g);
     }
 
     // set the panel
