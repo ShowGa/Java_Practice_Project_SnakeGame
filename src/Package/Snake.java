@@ -34,6 +34,18 @@ public class Snake {
             g.fillOval(n.x, n.y, SnakeGame.cellsize, SnakeGame.cellsize);
         }
     }
+
+    public boolean checkSnakeHitItself() {
+        if (snakeBody.size() < 5) {
+            return false;
+        }
+        for (int i = 4; i < snakeBody.size(); i++) {
+            if (snakeBody.get(0).x == snakeBody.get(i).x && snakeBody.get(0).y == snakeBody.get(i).y) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
 
 

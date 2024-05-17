@@ -20,13 +20,19 @@ public class SnakeGame extends JPanel implements KeyListener {
     private Timer t;
     private int speed = 100;
     private static String direction;
-    private Boolean canChange = true;
+    private Boolean canChange;
+    private int score;
 
     public SnakeGame() {
-        snake = new Snake();
-        fruit = new Fruit();
+        // or start game
+        reset();
 
-        // something like setInterval in JavaScript
+        // add KeyListener
+        addKeyListener(this);
+    }
+
+    // setTime method
+    private void setTimer() {
         t = new Timer();
         t.scheduleAtFixedRate(new TimerTask() {
             @Override
@@ -34,16 +40,48 @@ public class SnakeGame extends JPanel implements KeyListener {
                 repaint();
             }
         }, 0, speed);
+    }
 
+    // reset game method
+    private void reset() {
+        score = 0;
+        if (snake != null) {
+            snake.getSnakeBody().clear();
+        }
+        canChange = true;
         direction = "Right";
-
-        // add KeyListener
-        addKeyListener(this);
+        snake = new Snake();
+        fruit = new Fruit();
+        setTimer();
     }
 
     // Draw the snake
     @Override
     public void paintComponent(Graphics g) {
+        // check snake hit itself
+        // check with if statement
+        if (snake.checkSnakeHitItself()) {
+            canChange = false;
+            // dealing timer
+            t.cancel();
+            t.purge();
+            // dealing Dialog window
+            int response = JOptionPane.showOptionDialog(this, "Start again?", "Game Over", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, JOptionPane.YES_NO_OPTION);
+
+            switch(response) {
+                case JOptionPane.CLOSED_OPTION:
+                    System.exit(0);
+                    break;
+                case JOptionPane.NO_OPTION:
+                    System.exit(0);
+                    break;
+                case JOptionPane.YES_NO_OPTION:
+                    reset();
+                    return;
+            }
+
+        }
+
         // draw background
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, width, height);
