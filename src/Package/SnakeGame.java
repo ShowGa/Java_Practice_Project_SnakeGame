@@ -1,3 +1,5 @@
+package Package;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -76,7 +78,17 @@ public class SnakeGame extends JPanel implements KeyListener {
         }
 
         Node newHead = new Node(snakeX, snakeY);
-        snake.getSnakeBody().removeLast();
+        // get fruit then don't remove the last Node
+        if (snake.getSnakeBody().getFirst().x == fruit.getX() && snake.getSnakeBody().getFirst().y == fruit.getY()) {
+            // 1. New fruit location
+            fruit.setNewLocation(snake);
+            // 2. Draw new fruit
+            fruit.drawFruit(g);
+            // 3. add score (do later)
+
+        } else {
+            snake.getSnakeBody().removeLast();
+        }
         snake.getSnakeBody().add(0, newHead);
 
         // make canChange => true
@@ -127,12 +139,12 @@ public class SnakeGame extends JPanel implements KeyListener {
     // Executing the code
     public static void main(String[] args) {
         // Create JFrame window
-        JFrame window = new JFrame("Snake Game");
+        JFrame window = new JFrame("Package.Snake Game");
 
         // exit the program when close window
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // set window's content panel to new SnakeGame instance (SnakeGame inherit from JPanel)
+        // set window's content panel to new Package.SnakeGame instance (Package.SnakeGame inherit from JPanel)
         window.setContentPane(new SnakeGame());
 
         // adjust window size to fit the content
